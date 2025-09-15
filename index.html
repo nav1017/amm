@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>beautiful girl</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+      }
+
+      body {
+        background-color: #f8f1f7;
+        color: #2c2c2c;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+      }
+
+      header {
+        text-align: center;
+        margin-bottom: 30px;
+        width: 100%;
+      }
+
+      h1 {
+        font-size: 2.5rem;
+        color: #e91e63;
+        margin-bottom: 10px;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+        color: #9c27b0;
+        font-weight: 400;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        max-width: 800px;
+      }
+
+      .photo-section {
+        width: 100%;
+        margin-bottom: 30px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .photo-placeholder {
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 8px solid #ff4081;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+      }
+
+      .photo-placeholder img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .upload-btn {
+        background-color: #e91e63;
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 30px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-bottom: 20px;
+      }
+
+      .upload-btn:hover {
+        background-color: #c2185b;
+        transform: translateY(-2px);
+      }
+
+      .player {
+        width: 100%;
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+      }
+
+      .controls {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .play-btn {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background-color: #e91e63;
+        border: none;
+        color: white;
+        font-size: 1.5rem;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: all 0.3s ease;
+      }
+
+      .play-btn:hover {
+        background-color: #c2185b;
+        transform: scale(1.05);
+      }
+
+      .progress-container {
+        width: 100%;
+        margin: 20px 0;
+      }
+
+      .progress-bar {
+        width: 100%;
+        height: 8px;
+        background-color: #e0e0e0;
+        border-radius: 4px;
+        overflow: hidden;
+        cursor: pointer;
+      }
+
+      .progress {
+        width: 0;
+        height: 100%;
+        background-color: #e91e63;
+        transition: width 0.1s linear;
+      }
+
+      .time-display {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.9rem;
+        color: #757575;
+      }
+
+      .lyrics-container {
+        width: 100%;
+        max-height: 400px;
+        overflow-y: auto;
+        padding: 15px;
+        background: rgba(255, 255, 255, 0.7);
+        border-radius: 10px;
+        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+      }
+
+      .lyric-line {
+        margin: 15px 0;
+        text-align: center;
+        font-size: 1.1rem;
+        line-height: 1.6;
+        opacity: 0.5;
+        transition: all 0.3s ease;
+      }
+
+      .lyric-line.active {
+        opacity: 1;
+        color: #e91e63;
+        font-weight: bold;
+        font-size: 1.2rem;
+      }
+
+      @media (max-width: 768px) {
+        h1 {
+          font-size: 2rem;
+        }
+
+        h2 {
+          font-size: 1.2rem;
+        }
+
+        .photo-placeholder {
+          width: 200px;
+          height: 200px;
+        }
+
+        .player {
+          padding: 15px;
+        }
+
+        .lyric-line {
+          font-size: 1rem;
+        }
+
+        .lyric-line.active {
+          font-size: 1.1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>beautiful girl</h1>
+      <h2>ammarah</h2>
+    </header>
+
+    <div class="container">
+      <!-- Your Photo Section -->
+      <div class="photo-section">
+        <div class="photo-placeholder">
+          <img
+            src="aa.jpg"
+            alt="Upload your photo here - circular placeholder with pink background and white text"
+          />
+        </div>
+        <button class="upload-btn" id="uploadBtn">Upload Your Photo</button>
+        <input
+          type="file"
+          id="photoUpload"
+          accept="image/*"
+          style="display: none"
+        />
+      </div>
+
+      <!-- Music Player -->
+      <div class="player">
+        <div class="controls">
+          <button class="play-btn" id="playBtn">▶</button>
+        </div>
+
+        <div class="progress-container">
+          <div class="progress-bar" id="progressBar">
+            <div class="progress" id="progress"></div>
+          </div>
+          <div class="time-display">
+            <span id="currentTime">0:00</span>
+            <span id="duration">2:59</span>
+          </div>
+        </div>
+
+        <div class="lyrics-container" id="lyricsContainer">
+          <!-- Lyrics will be added dynamically -->
+        </div>
+      </div>
+    </div>
+
+    <audio id="audio" src="ammarah.mp3"></audio>
+
+    <script>
+      // DOM Elements
+      const audio = document.getElementById("audio");
+      const playBtn = document.getElementById("playBtn");
+      const progressBar = document.getElementById("progressBar");
+      const progress = document.getElementById("progress");
+      const currentTimeEl = document.getElementById("currentTime");
+      const durationEl = document.getElementById("duration");
+      const lyricsContainer = document.getElementById("lyricsContainer");
+      const photoUpload = document.getElementById("photoUpload");
+      const photoPlaceholder = document.querySelector(".photo-placeholder img");
+      const uploadBtn = document.getElementById("uploadBtn");
+
+      // Lyrics data
+      const lyrics = [
+        { time: 0.0, text: "the monsters gone" },
+        { time: 4.5, text: "he's on the run" },
+        { time: 9.0, text: "and your brothers here" },
+        { time: 13.5, text: "Beautiful beautiful beautiful girl" },
+        { time: 18.0, text: "" },
+        { time: 22.5, text: "..." },
+        { time: 27.0, text: "..." },
+        { time: 31.5, text: "...." },
+        { time: 36.0, text: "..." },
+        { time: 40.5, text: "..." },
+        { time: 45.0, text: "" },
+        { time: 49.5, text: "..." },
+        { time: 54.0, text: "..." },
+        { time: 58.5, text: "..." },
+        { time: 63.0, text: "..." },
+        { time: 67.5, text: "" },
+        { time: 72.0, text: "..." },
+        { time: 76.5, text: "..." },
+        { time: 81.0, text: "..." },
+        { time: 85.5, text: "..." },
+        { time: 90.0, text: "..." },
+        { time: 94.5, text: "..." },
+        { time: 99.0, text: "..." },
+        { time: 103.5, text: "..." },
+        { time: 108.0, text: "..." },
+        { time: 112.5, text: "" },
+        { time: 117.0, text: "..." },
+        { time: 121.5, text: "..." },
+        { time: 126.0, text: "..." },
+        { time: 130.5, text: "..." },
+        { time: 135.0, text: "..." },
+        { time: 139.5, text: "" },
+      ];
+
+      // Initialize lyrics display
+      function initLyrics() {
+        lyrics.forEach((line) => {
+          const div = document.createElement("div");
+          div.classList.add("lyric-line");
+          div.textContent = line.text;
+          div.dataset.time = line.time;
+          lyricsContainer.appendChild(div);
+        });
+      }
+
+      // Update time display
+      function formatTime(seconds) {
+        const minutes = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${minutes}:${secs < 10 ? "0" : ""}${secs}`;
+      }
+
+      // Update progress bar
+      function updateProgress() {
+        const { duration, currentTime } = audio;
+        const progressPercent = (currentTime / duration) * 100;
+        progress.style.width = `${progressPercent}%`;
+        currentTimeEl.textContent = formatTime(currentTime);
+
+        // Update active lyric
+        const currentLyric = lyrics.reduce(
+          (last, line) =>
+            line.time <= currentTime && line.time > last.time ? line : last,
+          { time: -100, text: "" }
+        );
+
+        document.querySelectorAll(".lyric-line").forEach((line) => {
+          if (parseFloat(line.dataset.time) === currentLyric.time) {
+            line.classList.add("active");
+          } else {
+            line.classList.remove("active");
+          }
+        });
+      }
+
+      // Set progress bar
+      function setProgress(e) {
+        const width = this.clientWidth;
+        const clickX = e.offsetX;
+        const duration = audio.duration;
+        audio.currentTime = (clickX / width) * duration;
+      }
+
+      // Play/Pause song
+      function togglePlay() {
+        if (audio.paused) {
+          audio.play();
+          playBtn.textContent = "❚❚";
+        } else {
+          audio.pause();
+          playBtn.textContent = "▶";
+        }
+      }
+
+      // Photo upload functionality
+      function uploadPhoto() {
+        photoUpload.click();
+      }
+
+      function handlePhotoUpload(e) {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function (event) {
+            photoPlaceholder.src = event.target.result;
+          };
+          reader.readAsDataURL(file);
+        }
+      }
+
+      // Event Listeners
+      playBtn.addEventListener("click", togglePlay);
+      audio.addEventListener("timeupdate", updateProgress);
+      audio.addEventListener("ended", () => {
+        playBtn.textContent = "▶";
+        progress.style.width = "0%";
+        currentTimeEl.textContent = "0:00";
+        document.querySelectorAll(".lyric-line").forEach((line) => {
+          line.classList.remove("active");
+        });
+      });
+      progressBar.addEventListener("click", setProgress);
+      uploadBtn.addEventListener("click", uploadPhoto);
+      photoUpload.addEventListener("change", handlePhotoUpload);
+
+      // Initialize
+      initLyrics();
+      audio.addEventListener("loadedmetadata", () => {
+        durationEl.textContent = formatTime(audio.duration);
+      });
+    </script>
+  </body>
+</html>
